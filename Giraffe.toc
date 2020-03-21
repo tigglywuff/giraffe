@@ -1,0 +1,11 @@
+## Interface: 20400
+## Title: Giraffe
+## Author: Wickers
+## Version: 0.1
+
+Giraffe.lua
+GiraffeFacts.lua
+GiraffePortal.lua
+Giraffe.xml
+
+## SavedVariables: Config

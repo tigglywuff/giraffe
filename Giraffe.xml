@@ -1,0 +1,15 @@
+<Ui>   
+<Script File="Giraffe.lua"/>
+<Script File="GiraffeFacts.lua"/>
+<Script File="GiraffePortal.lua"/>
+<Frame name="Giraffe" hidden="true">
+    <Scripts>
+        <OnLoad>
+            Giraffe.on_load()
+        </OnLoad>
+        <OnEvent>
+            Giraffe.on_event(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+        </OnEvent>
+    </Scripts>
+</Frame>
+</Ui>
