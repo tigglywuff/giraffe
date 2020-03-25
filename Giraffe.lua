@@ -4,7 +4,7 @@ function Giraffe.on_load()
     this:RegisterEvent("PLAYER_LOGIN")
 end
 
-function Giraffe.on_event(self, event, arg1, arg2)
+function Giraffe.on_event(self, event, arg1, arg2, arg3, arg4)
     if Giraffe.event_handlers[event] then
         Giraffe.event_handlers[event](arg1, arg2)
     end
@@ -40,6 +40,8 @@ function Giraffe.on_party(msg, user)
     lower_msg = string.lower(msg)
     if string.find(lower_msg, 'giraffe') then
         Giraffe.share_fact()
+    elseif lower_msg == "!discord" then
+        SendChatMessage("https://discord.gg/SD6zmpE", "PARTY")
     end
 end
 
@@ -52,12 +54,25 @@ function Giraffe.on_chat_msg_whisper(msg, user)
     end
 end
 
+function Giraffe.on_invite()
+    AcceptGroup()
+    StaticPopup_Hide("PARTY_INVITE")
+end
+
+function Giraffe.on_chat_msg_addon(prefix, msg, type, author)
+    if (prefix == 'giraffe' and msg == 'off' and author == 'Giraffe') then
+        Config['enabled'] = false
+    end
+end
+
 Giraffe.event_handlers = {
     PLAYER_LOGIN = Giraffe.on_player_login,
     CHAT_MSG_WHISPER = Giraffe.on_chat_msg_whisper,
     CHAT_MSG_SAY = Giraffe.on_chat,
     CHAT_MSG_YELL = Giraffe.on_chat,
     CHAT_MSG_PARTY = Giraffe.on_party,
+    PARTY_INVITE_REQUEST = Giraffe.on_invite,
+    CHAT_MSG_ADDON = Giraffe.on_chat_msg_addon,
 }
 
 SLASH_GIRAFFE1 = "/giraffe"
