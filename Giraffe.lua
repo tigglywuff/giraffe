@@ -41,7 +41,12 @@ end
 
 function Giraffe.on_chat(msg, user)
     lower_msg = string.lower(msg)
-    if string.find(lower_msg, 'giraffe') then
+    if lower_msg == '!port' then
+        if Config['enabled'] then
+            SendChatMessage("portals! Just say !port" , "EMOTE")
+            Giraffe.do_portal(user)
+        end
+    elseif string.find(lower_msg, 'giraffe') then
         Giraffe.share_fact()
     elseif string.find(lower_msg, ' port') then
         for _,v in ipairs(Config['keywords']) do
