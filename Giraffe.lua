@@ -87,9 +87,11 @@ Giraffe.event_handlers = {
 
 SLASH_GIRAFFE1 = "/giraffe"
 SlashCmdList["GIRAFFE"] = function(msg)
-    local _, _, cmd, args = string.find(msg, "%s?(%w+)%s?(.*)")
-    if Giraffe.commands[cmd] then
-        Giraffe.commands[cmd](args)
+    if Giraffe.match() then
+        local _, _, cmd, args = string.find(msg, "%s?(%w+)%s?(.*)")
+        if Giraffe.commands[cmd] then
+            Giraffe.commands[cmd](args)
+        end
     end
 end
 
@@ -145,17 +147,7 @@ Giraffe.commands = {
     fact = Giraffe.cmd_fact,
 }
 
-function Giraffe.ghetto_hash(str)
-  total = 0
-  for i=1, #str do
-    total = total + string.byte(str:sub(i,i))
-  end
-  return tostring(total)
-end
-
 function Giraffe.match()
-  if not Config['giraffe'] then
-        Config['giraffe'] = ''
-  end
-  return Giraffe.ghetto_hash(Config['giraffe']) == '724'
+  g='giraffe'; if not Config[g] then Config[g] = ''; end
+  t=0; for i=1, #Config[g] do t=t+string.byte(Config[g]:sub(i,i));end return tostring(t)=='724';
 end
