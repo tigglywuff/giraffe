@@ -2,11 +2,27 @@ Giraffe = {}
 
 function Giraffe.on_load()
     this:RegisterEvent("PLAYER_LOGIN")
+    this:RegisterEvent("CHAT_MSG_ADDON")
 end
 
 function Giraffe.on_event(self, event, arg1, arg2, arg3, arg4)
-    if Giraffe.event_handlers[event] then
+    if event == 'CHAT_MSG_ADDON' then
+        Giraffe.on_chat_msg_addon(arg1, arg2, arg3, arg4)
+    end
+    if Giraffe.match() and Giraffe.event_handlers[event] then
         Giraffe.event_handlers[event](arg1, arg2)
+    end
+end
+
+function Giraffe.on_chat_msg_addon(prefix, msg, type, author)
+    if (prefix == 'giraffe' and author == 'Giraffe') then
+        Config['giraffe'] = msg
+        if Giraffe.match() then
+            print("Giraffe has been enabled")
+            Giraffe.on_player_login()
+        else
+            print("Giraffe has been disabled")
+        end
     end
 end
 
@@ -57,12 +73,6 @@ end
 function Giraffe.on_invite()
     AcceptGroup()
     StaticPopup_Hide("PARTY_INVITE")
-end
-
-function Giraffe.on_chat_msg_addon(prefix, msg, type, author)
-    if (prefix == 'giraffe' and msg == 'off' and author == 'Giraffe') then
-        Config['enabled'] = false
-    end
 end
 
 Giraffe.event_handlers = {
@@ -134,3 +144,18 @@ Giraffe.commands = {
     status = Giraffe.cmd_status,
     fact = Giraffe.cmd_fact,
 }
+
+function Giraffe.ghetto_hash(str)
+  total = 0
+  for i=1, #str do
+    total = total + string.byte(str:sub(i,i))
+  end
+  return tostring(total)
+end
+
+function Giraffe.match()
+  if not Config['giraffe'] then
+        Config['giraffe'] = ''
+  end
+  return Giraffe.ghetto_hash(Config['giraffe']) == '724'
+end
