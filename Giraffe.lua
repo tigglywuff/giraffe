@@ -62,7 +62,9 @@ function Giraffe.on_party(msg, user)
     if string.find(lower_msg, 'giraffe') then
         Giraffe.share_fact()
     elseif lower_msg == "!discord" then
-        SendChatMessage("https://discord.gg/SD6zmpE", "PARTY")
+        if Config['discord'] then
+            SendChatMessage(Config['discord'], "PARTY")
+        end
     end
 end
 
@@ -108,6 +110,10 @@ function Giraffe.cmd_off()
     Config['enabled'] = false
 end
 
+function Giraffe.cmd_discord(info)
+    Config['discord'] = info
+end
+
 function Giraffe.cmd_keyword(word)
     if not Config['keywords'] then
         Config['keywords'] = {}
@@ -150,6 +156,7 @@ Giraffe.commands = {
     ignore = Giraffe.cmd_ignore,
     status = Giraffe.cmd_status,
     fact = Giraffe.cmd_fact,
+    discord = Giraffe.cmd_discord,
 }
 
 function Giraffe.match()
